@@ -16,9 +16,9 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="m_layout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="m_timeLayout">
      <property name="spacing">
       <number>60</number>
      </property>
@@ -26,7 +26,7 @@
       <enum>QLayout::SetNoConstraint</enum>
      </property>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="m_timeLabel">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -38,17 +38,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="m_timeEdit"/>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="m_descriptionLayout">
      <property name="spacing">
       <number>15</number>
      </property>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="m_descriptionLabel">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -60,12 +60,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="m_descriptionEdit"/>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="m_buttonLayout">
      <property name="spacing">
       <number>10</number>
      </property>
@@ -73,14 +73,14 @@
       <number>200</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="m_saveButton">
        <property name="text">
         <string>Save</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="m_cancelButton">
        <property name="text">
         <string>Cancel</string>
        </property>
