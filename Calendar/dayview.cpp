@@ -21,7 +21,7 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
 
     m_addButton = new QPushButton(this);
     m_closeButton = new QPushButton(this);
-    m_addButton->setText("Add");
+    m_addButton->setText("Add new");
     m_closeButton->setText("Close");
     m_addButton->setToolTip("Add new event");
     m_closeButton->setToolTip("Close window");
@@ -34,6 +34,12 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
     m_layout->addWidget(m_eventsTable);
     m_layout->addLayout(m_buttonLayout);
     setLayout(m_layout);
+
+    m_date = QDate(1999, 11, 20);
+
+    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(m_addButton, SIGNAL(clicked()), this, SLOT(slotAddEvent()));
+//    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(slotUpdateFile()));
 
     readEventsFromFile();
 }
@@ -49,20 +55,60 @@ bool DayView::readEventsFromFile()
     }
 
     QByteArray eventsData = loadFile.readAll();
-    QJsonObject eventsJson = QJsonDocument(QJsonDocument::fromJson(eventsData)).object();
-    QJsonArray eventsArray = eventsJson["events"].toArray();
+    loadFile.close();
+    eventsJson = QJsonDocument(QJsonDocument::fromJson(eventsData)).object();
+    QJsonArray eventsArray = eventsJson[m_date.toString("dd.MM.yyyy")].toArray();
 
     for (int i = 0; i < eventsArray.size(); i++)
     {
         QJsonObject singleEvent = eventsArray[i].toObject();
-        if (singleEvent["date"].toString() == "20.11.1999") // fixed placeholder date
-        {
-            int rowCount = m_eventsTable->rowCount();
-            m_eventsTable->insertRow(rowCount);
-            m_eventsTable->setItem(rowCount, 0, new QTableWidgetItem(singleEvent["time"].toString()));
-            m_eventsTable->setItem(rowCount, 1, new QTableWidgetItem(singleEvent["description"].toString()));
-        }
+        int rowCount = m_eventsTable->rowCount();
+        m_eventsTable->insertRow(rowCount);
+        m_eventsTable->setItem(rowCount, 0, new QTableWidgetItem(singleEvent["time"].toString()));
+        m_eventsTable->setItem(rowCount, 1, new QTableWidgetItem(singleEvent["description"].toString()));
     }
 
     return true;
+}
+
+void DayView::slotAddEvent()
+{
+    EventEdit *newEvent = new EventEdit();
+    QObject::connect(newEvent, SIGNAL(eventSaved(QJsonObject)), this, SLOT(slotAddEventToTable(QJsonObject)));
+    newEvent->exec();
+}
+
+void DayView::slotAddEventToTable(QJsonObject event)
+{
+    int rowCount = m_eventsTable->rowCount();
+    m_eventsTable->insertRow(rowCount);
+    m_eventsTable->setItem(rowCount, 0, new QTableWidgetItem(event["time"].toString()));
+    m_eventsTable->setItem(rowCount, 1, new QTableWidgetItem(event["description"].toString()));
+}
+
+void DayView::slotUpdateFile()
+{
+    int rowCount = m_eventsTable->rowCount();
+    QJsonArray updatedEvents;
+
+    for (int i = 0; i < rowCount; i++)
+    {
+        QJsonObject event;
+        event["time"] = m_eventsTable->item(i, 0)->text();
+        event["description"] = m_eventsTable->item(i, 1)->text();
+        updatedEvents.append(event);
+    }
+
+    eventsJson[m_date.toString("dd.MM.yyyy")] = updatedEvents;
+
+    QFile saveFile("../Calendar/events.json");
+    if (!saveFile.open(QIODevice::WriteOnly))
+    {
+        qWarning("Failed to open file.");
+        return;
+    }
+
+    QJsonDocument saveDoc(eventsJson);
+    saveFile.write(saveDoc.toJson());
+    saveFile.close();
 }

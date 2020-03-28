@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QJsonObject>
-#include <QDate>
 
 namespace Ui {
 class EventEdit;
@@ -14,19 +13,18 @@ class EventEdit : public QDialog
     Q_OBJECT
 
 public:
-    explicit EventEdit(QDate, QWidget *parent = nullptr);
+    explicit EventEdit(QWidget *parent = nullptr);
     ~EventEdit();
 
 private:
     Ui::EventEdit *ui;
-    QDate m_date;
     QJsonObject m_event;
 
 private slots:
     void slotSaveEvent();
 
 signals:
-    void eventSaved(QJsonObject m_event);
+    void eventSaved(QJsonObject event);
 
 };
 
