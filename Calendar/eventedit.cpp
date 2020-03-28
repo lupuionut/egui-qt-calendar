@@ -1,12 +1,12 @@
 #include "eventedit.h"
 #include "ui_eventedit.h"
 
-EventEdit::EventEdit(QDate *date, QWidget *parent) :
+EventEdit::EventEdit(QDate date, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EventEdit)
 {
     ui->setupUi(this);
-    m_date = new QDate(*date);
+    m_date = date;
 
     connect(ui->m_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->m_saveButton, SIGNAL(clicked()), this, SLOT(slotSaveEvent()));
@@ -19,10 +19,9 @@ EventEdit::~EventEdit()
 
 void EventEdit::slotSaveEvent()
 {
-    m_event = new QJsonObject();
-    m_event->operator[]("time") = ui->m_timeEdit->text();
-    m_event->operator[]("description") = ui->m_descriptionEdit->text();
-    m_event->operator[]("date") = m_date->toString("dd.MM.yyyy");
+    m_event["time"] = ui->m_timeEdit->text();
+    m_event["description"] = ui->m_descriptionEdit->text();
+    m_event["date"] = m_date.toString("dd.MM.yyyy");
 
     emit eventSaved(m_event);
     close();
