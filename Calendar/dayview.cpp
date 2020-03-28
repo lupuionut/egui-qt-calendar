@@ -11,7 +11,6 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
 
     m_eventsTable->setHorizontalHeaderLabels(m_tableHeader);
     m_eventsTable->verticalHeader()->setVisible(false);
-    m_eventsTable->setWindowTitle("*selected date*"); // placeholder title
 
     m_eventsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_eventsTable->setSelectionMode(QAbstractItemView::NoSelection);
@@ -36,12 +35,14 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
     setLayout(m_layout);
 
     m_date = QDate(1999, 11, 20);
+    setWindowTitle(m_date.toString("yyyy-MM-dd"));
 
     connect(m_closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(m_addButton, SIGNAL(clicked()), this, SLOT(slotAddEvent()));
-//    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(slotUpdateFile()));
+    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(slotUpdateFile()));
 
     readEventsFromFile();
+    m_eventsTable->sortByColumn(0,Qt::AscendingOrder);
 }
 
 bool DayView::readEventsFromFile()
@@ -84,6 +85,7 @@ void DayView::slotAddEventToTable(QJsonObject event)
     m_eventsTable->insertRow(rowCount);
     m_eventsTable->setItem(rowCount, 0, new QTableWidgetItem(event["time"].toString()));
     m_eventsTable->setItem(rowCount, 1, new QTableWidgetItem(event["description"].toString()));
+    m_eventsTable->sortByColumn(0,Qt::AscendingOrder);
 }
 
 void DayView::slotUpdateFile()
