@@ -7,7 +7,7 @@ class CalendarWidget : public QCalendarWidget
 {
     Q_OBJECT
 public:
-    CalendarWidget(QWidget *parent = nullptr);
+    explicit CalendarWidget(QWidget *parent = nullptr);
 protected:
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const override;
 };

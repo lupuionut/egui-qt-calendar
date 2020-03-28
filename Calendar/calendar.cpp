@@ -5,7 +5,3 @@ Calendar::Calendar(QWidget *parent)
 {
 }
 
-Calendar::~Calendar()
-{
-}
-

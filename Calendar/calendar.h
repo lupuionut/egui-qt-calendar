@@ -8,7 +8,6 @@ class Calendar : public QMainWindow
     Q_OBJECT
 
 public:
-    Calendar(QWidget *parent = nullptr);
-    ~Calendar();
+    explicit Calendar(QWidget *parent = nullptr);
 };
 #endif // CALENDAR_H
