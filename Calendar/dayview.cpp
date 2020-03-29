@@ -47,7 +47,7 @@ DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
 
 bool DayView::readEventsFromFile()
 {
-    QFile loadFile("../Calendar/events.json");
+    QFile loadFile("events.json");
 
     if (!loadFile.open(QIODevice::ReadOnly))
     {
@@ -107,7 +107,7 @@ void DayView::updateEventsTable()
 
 bool DayView::writeEventsToFile()
 {
-    QFile saveFile("../Calendar/events.json");
+    QFile saveFile("events.json");
     if (!saveFile.open(QIODevice::WriteOnly))
     {
         qWarning("Failed to open file.");
