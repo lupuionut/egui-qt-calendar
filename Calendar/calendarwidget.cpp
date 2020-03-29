@@ -1,11 +1,11 @@
 #include "calendarwidget.h"
 
-CalendarWidget::CalendarWidget(QWidget *parent)
+CalendarWidget::CalendarWidget(QWidget *parent) : QCalendarWidget(parent)
 {
 
 }
 
 void CalendarWidget::paintCell(QPainter *painter, const QRect &rect, const QDate &date) const
 {
-
+    QCalendarWidget::paintCell(painter, rect, date);
 }
