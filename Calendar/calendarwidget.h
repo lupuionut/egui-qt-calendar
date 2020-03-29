@@ -2,7 +2,13 @@
 #define CALENDARWIDGET_H
 
 #include <QCalendarWidget>
-#include <QSet>
+#include <QVector>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QFile>
+#include <QPainter>
 
 class CalendarWidget : public QCalendarWidget
 {
@@ -12,6 +18,15 @@ public:
 
 protected:
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const override;
+
+private:
+    QVector<QDate> m_datesWithEvents;
+    QJsonObject m_events;
+
+    bool readEventsFromJson();
+
+private slots:
+    void slotUpdateVectorOfDates();
 };
 
 #endif // CALENDARWIDGET_H

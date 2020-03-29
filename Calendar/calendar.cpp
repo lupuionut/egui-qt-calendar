@@ -12,5 +12,14 @@ Calendar::Calendar(QWidget *parent) : QMainWindow(parent)
 
     resize(600, 400);
 
+    connect(m_calendarWidget, SIGNAL(clicked(QDate)), this, SLOT(slotOpenDayView(QDate)));
+
     setCentralWidget(m_calendarWidget);
+}
+
+void Calendar::slotOpenDayView(QDate date)
+{
+    DayView *day = new DayView(date);
+    connect(day, SIGNAL(windowClosed()), m_calendarWidget, SLOT(slotUpdateVectorOfDates()));
+    day->exec();
 }

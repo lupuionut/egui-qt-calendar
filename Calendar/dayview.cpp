@@ -1,6 +1,6 @@
 #include "dayview.h"
 
-DayView::DayView(QWidget *parent) : QDialog(parent)
+DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
 {
     m_eventsTable = new QTableWidget(this);
     m_tableHeader << "Time" << "Description";
@@ -26,7 +26,7 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
     m_closeButton->setToolTip("Close window");
 
     m_layout = new QVBoxLayout(this);
-    m_buttonLayout = new QHBoxLayout(this);
+    m_buttonLayout = new QHBoxLayout;
     m_buttonLayout->addWidget(m_addButton);
     m_buttonLayout->addStretch();
     m_buttonLayout->addWidget(m_closeButton);
@@ -35,10 +35,10 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
     m_layout->addLayout(m_buttonLayout);
     setLayout(m_layout);
 
-    m_date = QDate(1999, 11, 20);
+    m_date = date;
     setWindowTitle(m_date.toString("yyyy-MM-dd"));
 
-    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(m_closeButton, SIGNAL(clicked()), this, SLOT(slotCloseWindow()));
     connect(m_addButton, SIGNAL(clicked()), this, SLOT(slotAddEvent()));
 
     readEventsFromFile();
@@ -154,7 +154,10 @@ void DayView::slotDeleteEvent()
         }
     }
 
-    m_eventsJson[m_date.toString("dd.MM.yyyy")] = currentDayEvents;
+    if (currentDayEvents.isEmpty())
+        m_eventsJson.remove(m_date.toString("dd.MM.yyyy"));
+    else
+        m_eventsJson[m_date.toString("dd.MM.yyyy")] = currentDayEvents;
 
     updateEventsTable();
     writeEventsToFile();
@@ -188,4 +191,10 @@ void DayView::slotEditEventInTable(QJsonObject event, int rowToEdit)
 
     updateEventsTable();
     writeEventsToFile();
+}
+
+void DayView::slotCloseWindow()
+{
+    emit windowClosed();
+    close();
 }

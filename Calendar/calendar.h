@@ -15,5 +15,8 @@ public:
 
 private:
     CalendarWidget *m_calendarWidget;
+
+private slots:
+    void slotOpenDayView(QDate date);
 };
 #endif // CALENDAR_H

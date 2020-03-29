@@ -11,7 +11,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
-#include <QBitArray>
 #include <QDate>
 
 class DayView : public QDialog
@@ -19,7 +18,7 @@ class DayView : public QDialog
     Q_OBJECT
 
 public:
-    explicit DayView(QWidget *parent = nullptr);
+    explicit DayView(QDate date, QWidget *parent = nullptr);
 
 private:
     QTableWidget *m_eventsTable;
@@ -38,12 +37,16 @@ private:
     void updateEventsTable();
     bool writeEventsToFile();
 
+signals:
+    void windowClosed();
+
 private slots:
     void slotAddEvent();
     void slotSaveEventToTable(QJsonObject event);
     void slotDeleteEvent();
     void slotEditEvent();
     void slotEditEventInTable(QJsonObject event, int rowToEdit);
+    void slotCloseWindow();
 };
 
 
