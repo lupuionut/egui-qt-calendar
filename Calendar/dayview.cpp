@@ -28,6 +28,7 @@ DayView::DayView(QWidget *parent) : QDialog(parent)
     m_layout = new QVBoxLayout(this);
     m_buttonLayout = new QHBoxLayout(this);
     m_buttonLayout->addWidget(m_addButton);
+    m_buttonLayout->addStretch();
     m_buttonLayout->addWidget(m_closeButton);
     m_buttonLayout->setSpacing(80);
     m_layout->addWidget(m_eventsTable);
@@ -67,6 +68,21 @@ bool DayView::readEventsFromFile()
         m_eventsTable->insertRow(rowCount);
         m_eventsTable->setItem(rowCount, 0, new QTableWidgetItem(singleEvent["time"].toString()));
         m_eventsTable->setItem(rowCount, 1, new QTableWidgetItem(singleEvent["description"].toString()));
+
+        QWidget *rowButtons = new QWidget(m_eventsTable);
+        QHBoxLayout *rowButtonLayout = new QHBoxLayout(rowButtons);
+        QPushButton *editButton = new QPushButton(rowButtons);
+        editButton->setText("Edit");
+        QPushButton *deleteButton = new QPushButton(rowButtons);
+        deleteButton->setText("Delete");
+        rowButtonLayout->addStretch();
+        rowButtonLayout->addWidget(editButton);
+        rowButtonLayout->addWidget(deleteButton);
+        rowButtonLayout->setAlignment(deleteButton, Qt::AlignRight);
+        rowButtonLayout->setAlignment(editButton, Qt::AlignRight);
+        rowButtonLayout->setSpacing(1);
+        rowButtonLayout->setContentsMargins(100, 0, 5, 0);
+        m_eventsTable->setCellWidget(rowCount, 1, rowButtons);
     }
 
     return true;
