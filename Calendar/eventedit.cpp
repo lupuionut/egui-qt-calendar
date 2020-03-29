@@ -10,6 +10,9 @@ EventEdit::EventEdit(EditMode editMode, int rowToEdit, QWidget *parent) :
     m_rowToEdit = rowToEdit;
     m_editMode = editMode;
 
+    QValidator *timeValidator = new QRegExpValidator(QRegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9])$"));
+    ui->m_timeEdit->setValidator(timeValidator);
+
     if (editMode == Add)
         this->setWindowTitle("Add event");
 

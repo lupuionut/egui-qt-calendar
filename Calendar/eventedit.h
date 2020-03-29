@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QJsonObject>
+#include <QRegExpValidator>
 
 namespace Ui {
 class EventEdit;
