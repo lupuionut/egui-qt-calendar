@@ -17,6 +17,9 @@
    <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>24</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="m_timeLayout">
      <property name="spacing">

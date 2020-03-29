@@ -32,14 +32,18 @@ private:
     QHBoxLayout *m_buttonLayout;
 
     QDate m_date;
-    QJsonObject eventsJson;
+    QJsonObject m_eventsJson;
 
     bool readEventsFromFile();
+    void updateEventsTable();
+    bool writeEventsToFile();
 
 private slots:
     void slotAddEvent();
-    void slotAddEventToTable(QJsonObject event);
-    void slotUpdateFile();
+    void slotSaveEventToTable(QJsonObject event);
+    void slotDeleteEvent();
+    void slotEditEvent();
+    void slotEditEventInTable(QJsonObject event, int rowToEdit);
 };
 
 
