@@ -10,7 +10,7 @@ void CalendarWidget::paintCell(QPainter *painter, const QRect &rect, const QDate
     if (m_datesWithEvents.contains(date))
     {
         painter->drawText(rect, Qt::AlignCenter, QString::number(date.day()));
-        painter->fillRect(rect, QColor::fromRgb(128, 128, 255, 64));
+        painter->fillRect(rect, QColor::fromRgb(179, 172, 247, 80));
     }
     else
         QCalendarWidget::paintCell(painter, rect, date);

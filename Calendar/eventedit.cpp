@@ -1,7 +1,7 @@
 #include "eventedit.h"
 #include "ui_eventedit.h"
 
-EventEdit::EventEdit(EditMode editMode, int rowToEdit, QWidget *parent) :
+EventEdit::EventEdit(EditMode editMode, int rowToEdit, QString time, QString description, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EventEdit)
 {
@@ -15,6 +15,11 @@ EventEdit::EventEdit(EditMode editMode, int rowToEdit, QWidget *parent) :
 
     if (editMode == Add)
         this->setWindowTitle("Add event");
+    else
+    {
+        ui->m_timeEdit->setText(time);
+        ui->m_descriptionEdit->setText(description);
+    }
 
     connect(ui->m_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->m_saveButton, SIGNAL(clicked()), this, SLOT(slotSaveEvent()));

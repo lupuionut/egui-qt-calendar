@@ -2,21 +2,25 @@
 
 DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
 {
+    setMinimumSize(400, 350);
+
     m_eventsTable = new QTableWidget(this);
-    m_tableHeader << "Time" << "Description";
+    m_tableHeader << "Time" << "Description" << "";
 
     m_eventsTable->setRowCount(0);
-    m_eventsTable->setColumnCount(2);
+    m_eventsTable->setColumnCount(3);
     m_eventsTable->insertRow(3);
 
     m_eventsTable->setHorizontalHeaderLabels(m_tableHeader);
     m_eventsTable->verticalHeader()->setVisible(false);
+    m_eventsTable->setShowGrid(false);
 
     m_eventsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_eventsTable->setSelectionMode(QAbstractItemView::NoSelection);
 
     m_eventsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     m_eventsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    m_eventsTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
     m_addButton = new QPushButton(this);
     m_closeButton = new QPushButton(this);
@@ -92,16 +96,15 @@ void DayView::updateEventsTable()
         rowButtonLayout->addWidget(deleteButton);
         rowButtonLayout->setAlignment(deleteButton, Qt::AlignRight);
         rowButtonLayout->setAlignment(editButton, Qt::AlignRight);
-        rowButtonLayout->setSpacing(1);
-        rowButtonLayout->setContentsMargins(100, 0, 5, 0);
-        m_eventsTable->setCellWidget(i, 1, rowButtons);
+        rowButtonLayout->setContentsMargins(0, 0, 5, 0);
+        m_eventsTable->setCellWidget(i, 2, rowButtons);
     }
     m_eventsTable->sortByColumn(0,Qt::AscendingOrder);
 
     for (int i = 0; i < m_eventsTable->rowCount(); i++)
     {
-        m_eventsTable->cellWidget(i, 1)->findChild<QPushButton *>("editButton")->setProperty("id", i);
-        m_eventsTable->cellWidget(i, 1)->findChild<QPushButton *>("deleteButton")->setProperty("id", i);
+        m_eventsTable->cellWidget(i, 2)->findChild<QPushButton *>("editButton")->setProperty("id", i);
+        m_eventsTable->cellWidget(i, 2)->findChild<QPushButton *>("deleteButton")->setProperty("id", i);
     }
 }
 
@@ -167,7 +170,7 @@ void DayView::slotEditEvent()
 {
     QPushButton *buttonSender = qobject_cast<QPushButton*>(sender());
 
-    EventEdit *newEvent = new EventEdit(EventEdit::Edit, buttonSender->property("id").toInt());
+    EventEdit *newEvent = new EventEdit(EventEdit::Edit, buttonSender->property("id").toInt(), m_eventsTable->item(buttonSender->property("id").toInt(), 0)->text(), m_eventsTable->item(buttonSender->property("id").toInt(), 1)->text());
     QObject::connect(newEvent, SIGNAL(editedEventSaved(QJsonObject, int)), this, SLOT(slotEditEventInTable(QJsonObject, int)));
     newEvent->exec();
 }

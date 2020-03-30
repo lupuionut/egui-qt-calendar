@@ -19,7 +19,7 @@ public:
         Add, Edit
     };
 
-    explicit EventEdit(EditMode editMode, int rowToEdit = 0, QWidget *parent = nullptr);
+    explicit EventEdit(EditMode editMode, int rowToEdit = 0, QString time = "", QString description = "", QWidget *parent = nullptr);
     ~EventEdit();
 
 private:
