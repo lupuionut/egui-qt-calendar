@@ -1,4 +1,4 @@
-# egui-calendar
+# egui-qt-calendar
 Simple Qt5 calendar app for Graphical User Interfaces course at Faculty of Electronics of Warsaw University of Technology.
 ## Functionality
 The app's main (and only) feature is event managing. It allows user to store events for chosen days. Calendar provides simple
