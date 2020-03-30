@@ -2,6 +2,7 @@
 
 DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
 {
+    // visuals
     setMinimumSize(400, 350);
 
     m_eventsTable = new QTableWidget(this);
@@ -22,13 +23,15 @@ DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
     m_eventsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     m_eventsTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
+    //buttons
     m_addButton = new QPushButton(this);
     m_closeButton = new QPushButton(this);
     m_addButton->setText("Add new");
     m_closeButton->setText("Close");
     m_addButton->setToolTip("Add new event");
-    m_closeButton->setToolTip("Close window");
+    m_closeButton->setToolTip("Close window and saves events");
 
+    // layouts
     m_layout = new QVBoxLayout(this);
     m_buttonLayout = new QHBoxLayout;
     m_buttonLayout->addWidget(m_addButton);
@@ -39,12 +42,15 @@ DayView::DayView(QDate date, QWidget *parent) : QDialog(parent)
     m_layout->addLayout(m_buttonLayout);
     setLayout(m_layout);
 
+    // date handling
     m_date = date;
     setWindowTitle(m_date.toString("yyyy-MM-dd"));
 
+    // conncetions with buttons
     connect(m_closeButton, SIGNAL(clicked()), this, SLOT(slotCloseWindow()));
     connect(m_addButton, SIGNAL(clicked()), this, SLOT(slotAddEvent()));
 
+    // reading data
     readEventsFromFile();
     updateEventsTable();
 }
@@ -79,6 +85,7 @@ void DayView::updateEventsTable()
         m_eventsTable->setItem(i, 0, new QTableWidgetItem(singleEvent["time"].toString()));
         m_eventsTable->setItem(i, 1, new QTableWidgetItem(singleEvent["description"].toString()));
 
+        // edit and delete buttons in row (next to description)
         QWidget *rowButtons = new QWidget(m_eventsTable);
         QHBoxLayout *rowButtonLayout = new QHBoxLayout(rowButtons);
 
@@ -88,9 +95,12 @@ void DayView::updateEventsTable()
         QPushButton *deleteButton = new QPushButton(rowButtons);
         deleteButton->setText("Delete");
         deleteButton->setObjectName("deleteButton");
+
+        // connecting buttons
         connect(editButton, SIGNAL(clicked()), this, SLOT(slotEditEvent()));
         connect(deleteButton, SIGNAL(clicked()), this, SLOT(slotDeleteEvent()));
 
+        // layouts
         rowButtonLayout->addStretch();
         rowButtonLayout->addWidget(editButton);
         rowButtonLayout->addWidget(deleteButton);
@@ -103,6 +113,7 @@ void DayView::updateEventsTable()
 
     for (int i = 0; i < m_eventsTable->rowCount(); i++)
     {
+        // set buttons id to make it possible to identify and refer to them
         m_eventsTable->cellWidget(i, 2)->findChild<QPushButton *>("editButton")->setProperty("id", i);
         m_eventsTable->cellWidget(i, 2)->findChild<QPushButton *>("deleteButton")->setProperty("id", i);
     }
@@ -138,7 +149,6 @@ void DayView::slotSaveEventToTable(QJsonObject event)
     m_eventsJson[m_date.toString("dd.MM.yyyy")] = currentDayEvents;
 
     updateEventsTable();
-    writeEventsToFile();
 }
 
 void DayView::slotDeleteEvent()
@@ -163,7 +173,6 @@ void DayView::slotDeleteEvent()
         m_eventsJson[m_date.toString("dd.MM.yyyy")] = currentDayEvents;
 
     updateEventsTable();
-    writeEventsToFile();
 }
 
 void DayView::slotEditEvent()
@@ -193,11 +202,11 @@ void DayView::slotEditEventInTable(QJsonObject event, int rowToEdit)
     m_eventsJson[m_date.toString("dd.MM.yyyy")] = currentDayEvents;
 
     updateEventsTable();
-    writeEventsToFile();
 }
 
 void DayView::slotCloseWindow()
 {
+    writeEventsToFile();
     emit windowClosed();
     close();
 }

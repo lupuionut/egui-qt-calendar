@@ -50,7 +50,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_timeEdit"/>
+      <widget class="QLineEdit" name="m_timeEdit">
+       <property name="inputMask">
+        <string>99:99</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

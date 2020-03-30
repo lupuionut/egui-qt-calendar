@@ -14,6 +14,7 @@ class EventEdit : public QDialog
     Q_OBJECT
 
 public:
+    // Add mode allows user to add brand new event; Edit mode allows to set new values for existing events
     enum EditMode
     {
         Add, Edit
@@ -29,11 +30,11 @@ private:
     EditMode m_editMode;
 
 private slots:
-    void slotSaveEvent();
+    void slotSaveEvent(); // saves event to m_event
 
 signals:
-    void newEventSaved(QJsonObject event);
-    void editedEventSaved(QJsonObject event, int rowToEdit);
+    void newEventSaved(QJsonObject event); // informs that new event has been created
+    void editedEventSaved(QJsonObject event, int rowToEdit); // informs that event has been edited
 
 };
 

@@ -16,16 +16,17 @@ public:
     explicit CalendarWidget(QWidget *parent = nullptr);
 
 protected:
+    // overrided method which paints only days with events
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const override;
 
 private:
     QVector<QDate> m_datesWithEvents;
     QJsonObject m_events;
 
-    bool readEventsFromJson();
+    bool readEventsFromJson(); // reads events from JSON file and saves them in m_events
 
 private slots:
-    void slotUpdateVectorOfDates();
+    void slotUpdateVectorOfDates(); // saves dates with events in m_datesWithEvents
 };
 
 #endif // CALENDARWIDGET_H

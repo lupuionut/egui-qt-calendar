@@ -10,7 +10,8 @@ EventEdit::EventEdit(EditMode editMode, int rowToEdit, QString time, QString des
     m_rowToEdit = rowToEdit;
     m_editMode = editMode;
 
-    QValidator *timeValidator = new QRegExpValidator(QRegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9])$"));
+    // validator which accepts only time in HH:MM format
+    QValidator *timeValidator = new QRegExpValidator(QRegExp("^([0-1 ][0-9 ]|[2 ][0-3 ]):([0-5 ][0-9 ])$"));
     ui->m_timeEdit->setValidator(timeValidator);
 
     if (editMode == Add)
@@ -21,6 +22,7 @@ EventEdit::EventEdit(EditMode editMode, int rowToEdit, QString time, QString des
         ui->m_descriptionEdit->setText(description);
     }
 
+    // connecting buttons
     connect(ui->m_cancelButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->m_saveButton, SIGNAL(clicked()), this, SLOT(slotSaveEvent()));
 }

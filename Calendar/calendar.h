@@ -17,6 +17,6 @@ private:
     CalendarWidget *m_calendarWidget;
 
 private slots:
-    void slotOpenDayView(QDate date);
+    void slotOpenDayView(QDate date); // opens dialog with events in chosen date
 };
 #endif // CALENDAR_H

@@ -33,20 +33,20 @@ private:
     QDate m_date;
     QJsonObject m_eventsJson;
 
-    bool readEventsFromFile();
-    void updateEventsTable();
-    bool writeEventsToFile();
+    bool readEventsFromFile(); // saves events from JSON to m_eventsJson
+    void updateEventsTable(); // applies changes made to events in selected day (day edited in current dialog)
+    bool writeEventsToFile(); // saves events from m_eventsJson to JSON file
 
 signals:
-    void windowClosed();
+    void windowClosed(); // informs main widget (calendar) that dialog has been closed
 
 private slots:
-    void slotAddEvent();
-    void slotSaveEventToTable(QJsonObject event);
-    void slotDeleteEvent();
-    void slotEditEvent();
-    void slotEditEventInTable(QJsonObject event, int rowToEdit);
-    void slotCloseWindow();
+    void slotAddEvent(); // opens dialog for adding new event
+    void slotSaveEventToTable(QJsonObject event); // saves new event in table
+    void slotDeleteEvent(); // deletes event
+    void slotEditEvent(); // opens dialog for editing existing event
+    void slotEditEventInTable(QJsonObject event, int rowToEdit); // saves edited event in table
+    void slotCloseWindow(); // calls writeEventsToFile() and emits windowClosed()
 };
 
 
