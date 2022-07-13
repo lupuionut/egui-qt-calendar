@@ -12,6 +12,7 @@
 #include <QJsonDocument>
 #include <QFile>
 #include <QDate>
+#include <QCoreApplication>
 
 class DayView : public QDialog
 {

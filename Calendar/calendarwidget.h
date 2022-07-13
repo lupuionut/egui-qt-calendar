@@ -8,6 +8,8 @@
 #include <QJsonValue>
 #include <QFile>
 #include <QPainter>
+#include <QDir>
+#include <QCoreApplication>
 
 class CalendarWidget : public QCalendarWidget
 {

@@ -18,7 +18,8 @@ void CalendarWidget::paintCell(QPainter *painter, const QRect &rect, const QDate
 
 bool CalendarWidget::readEventsFromJson()
 {
-    QFile loadFile("events.json");
+    QString location = QCoreApplication::applicationDirPath() + "/events.json";
+    QFile loadFile(location);
 
     if (!loadFile.open(QIODevice::ReadOnly))
     {
